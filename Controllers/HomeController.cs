@@ -42,7 +42,6 @@ namespace wedding_planner.Controllers
                     dbContext.SaveChanges();
                     HttpContext.Session.SetInt32("UserId", user.UserId);
                     return RedirectToAction("GetAccount", new {userId = user.UserId});
-                    //GetAccount here is method/function name - not Route name
                 }
            }
            else{
@@ -71,9 +70,7 @@ namespace wedding_planner.Controllers
                 HttpContext.Session.SetInt32("UserId", userInDb.UserId);
                 User user = dbContext.users.FirstOrDefault(u => u.UserId == userInDb.UserId);
                 TempData["name"] = user.FirstName;
-                // decimal balance = dbContext.transactions.Where(t => t.UserId == userInDb.UserId).Sum(t => (decimal)t.Amount);
-                // TempData["balance"] = balance.ToString("0.##");
-                return RedirectToAction("GetAccount", new {userId = user.UserId}); //action here is the Method or Function GetAccount()
+                return RedirectToAction("GetAccount", new {userId = user.UserId});
             }
             else{
                 return View("Login");
@@ -93,7 +90,10 @@ namespace wedding_planner.Controllers
             TempData["name"] = user.FirstName;
             TempData["id"] = user.UserId;
 
-            var weddings = dbContext.weddings.Include(w => w.MyGuests).ThenInclude(r => r.User).ToList();
+            var weddings = dbContext.weddings
+                .Include(w => w.MyGuests)
+                .ThenInclude(r => r.User)
+                .ToList();
             return View("Dashboard", weddings);
        }
 
@@ -109,18 +109,26 @@ namespace wedding_planner.Controllers
        [HttpPost("createWedding")]
        public IActionResult createWedding(string wedderOne, string wedderTwo, DateTime date, string address){
            if(ModelState.IsValid){
-                int? id = HttpContext.Session.GetInt32("UserId");
-                User user = dbContext.users.FirstOrDefault(u => u.UserId == id);
-                Wedding wedding = new Wedding{
-                WedderOne = wedderOne,
-                WedderTwo = wedderTwo,
-                Date = date,
-                Address = address,
-                UserId = user.UserId
-           };
-               dbContext.weddings.Add(wedding);
-               dbContext.SaveChanges();
-               return RedirectToAction("Details");
+               if(date < DateTime.Now){
+                   ModelState.AddModelError("Date", "Wedding date must be in the future");
+                   return View("WeddingForm");
+               }
+               else{
+                   int? id = HttpContext.Session.GetInt32("UserId");
+                    User user = dbContext.users.FirstOrDefault(u => u.UserId == id);
+                    Wedding wedding = new Wedding{
+                    WedderOne = wedderOne,
+                    WedderTwo = wedderTwo,
+                    Date = date,
+                    Address = address,
+                    UserId = user.UserId
+                    };
+
+                    dbContext.weddings.Add(wedding);
+                    dbContext.SaveChanges();
+                    return RedirectToAction("Details");
+               }
+                
            }
            else{
                return View("WeddingForm");
@@ -134,7 +142,10 @@ namespace wedding_planner.Controllers
 
        [HttpGet("/details/{wedId}")]
        public IActionResult OneWedding(int wedId){
-           var oneWedding = dbContext.weddings.Include(w => w.MyGuests).ThenInclude(r => r.User).FirstOrDefault(w => w.WeddingId == wedId);
+           var oneWedding = dbContext.weddings
+            .Include(w => w.MyGuests)
+            .ThenInclude(r => r.User)
+            .FirstOrDefault(w => w.WeddingId == wedId);
            return View("Details", oneWedding);
        }
 
