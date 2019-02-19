@@ -1,0 +1,21 @@
+﻿@model Wedding
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1> @Model.WedderOne & @Model.WedderTwo's Wedding</h1>
+    <a href = "/dashboard">Dashboard</a>   <a href = "/logout">Logout</a>
+    <hr>
+    <h4>Date: @Model.Date.ToString("MMMM dd, yyyy")</h4>
+    @{
+        foreach(var g in @Model.MyGuests){
+            <h4>Guest: @g.User.FirstName</h4>
+        }
+    }
+</body>
+</html>
