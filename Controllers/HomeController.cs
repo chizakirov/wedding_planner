@@ -15,7 +15,6 @@ namespace wedding_planner.Controllers
     public class HomeController : Controller
     {
         private MyContext dbContext;
-        //injecting context service
         public HomeController(MyContext context)
         {
             dbContext = context;
@@ -26,7 +25,7 @@ namespace wedding_planner.Controllers
         }
 
         [HttpPost("register")]
-       public IActionResult Register(User user){
+        public IActionResult Register(User user){
            if(ModelState.IsValid){
                User exists = dbContext.users.FirstOrDefault(u => u.Email == user.Email);
 
@@ -128,7 +127,6 @@ namespace wedding_planner.Controllers
                     dbContext.SaveChanges();
                     return RedirectToAction("Details");
                }
-                
            }
            else{
                return View("WeddingForm");
@@ -149,9 +147,9 @@ namespace wedding_planner.Controllers
            return View("Details", oneWedding);
        }
 
-       [HttpPost("RSVP")]
+       [HttpGet("RSVP/{WeddingId}")]
        public IActionResult RSVP(int weddingId){
-           int? id = HttpContext.Session.GetInt32("UserId");
+            int? id = HttpContext.Session.GetInt32("UserId");
             User user = dbContext.users.FirstOrDefault(u => u.UserId == id);
             RSVP rsvp = new RSVP{
                UserId = user.UserId,
@@ -171,7 +169,7 @@ namespace wedding_planner.Controllers
             return RedirectToAction("GetAccount");
        }
 
-       [HttpPost("/unRSVP/{weddingId}")]
+       [HttpGet("/unRSVP/{weddingId}")]
        public IActionResult UnRSVP(int weddingId){
            int? id = HttpContext.Session.GetInt32("UserId");
             User user = dbContext.users.FirstOrDefault(u => u.UserId == id);

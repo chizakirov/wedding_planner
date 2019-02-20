@@ -17,38 +17,21 @@
             <p>Wedding: <a href = "/details/@w.WeddingId">@w.WedderOne & @w.WedderTwo</a></p>
             <p>Date: @w.Date.ToString("MMMM dd, yyyy")</p>
             <p>Guest Count: @w.MyGuests.Count</p>
-            foreach(var g in @w.MyGuests){
+            @foreach(var g in @w.MyGuests)
+            {
                 <p>Guests Name: @g.User.FirstName</p>
             }
 
-            if(@w.UserId != (int)TempData["id"]){
-                bool RSVPed = false;
-                foreach(var guest in @w.MyGuests){
-                    if(@guest.User.UserId == @w.UserId){
-                        RSVPed = true;
-                    }
-                }
-                if(RSVPed == true){
-                    <p>Action: </p>
-                    <form action="/unRSVP/@w.WeddingId" method="post">
-                        <input type="hidden" name="WeddingId" value="@w.WeddingId">
-                        <a><input type="submit" value="Un-RSVP"></a>
-                    </form>
-                }
-                else{
-                    <p>Action:</p>
-                    <form action="/RSVP" method="post">
-                        <input type="hidden" name="WeddingId" value="@w.WeddingId">
-                        <a><input type="submit" value="RSVP"></a>
-                    </form>
-                }
+            @if(@w.UserId == (int)TempData["id"])
+            {
+                <a href ="/deleteWedding/@w.WeddingId">Delete</a>
+            }
+            else if (w.MyGuests.Select(rsvp => rsvp.User.UserId).Contains((int)TempData["id"]))
+            {
+                <a href ="/unRSVP/@w.WeddingId">UN-RSVP</a>
             }
             else{
-                <p>Action:</p> 
-                <form action="/deleteWedding/@w.WeddingId">
-                    <input type="hidden" name="WedId" value="@w.WeddingId">
-                    <a><input type="submit" value="Delete"></a>
-                </form>
+                <a href ="/RSVP/@w.WeddingId">RSVP</a>
             }
         }
         <hr>

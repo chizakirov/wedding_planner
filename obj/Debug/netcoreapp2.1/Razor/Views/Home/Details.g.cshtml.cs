@@ -54,7 +54,7 @@ using wedding_planner.Models;
             WriteLiteral("<!DOCTYPE html>\r\n<html lang=\"en\">\r\n");
             EndContext();
             BeginContext(51, 207, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "54580f8d6b5549899604afe595a174f6", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "0c8ad11a9f0f4c028676affe28b5b86b", async() => {
                 BeginContext(57, 194, true);
                 WriteLiteral("\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\r\n    <title>Document</title>\r\n");
                 EndContext();
@@ -74,7 +74,7 @@ using wedding_planner.Models;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(260, 336, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f5896ce1f4f646eea9666ebda9a0a35f", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b803dd2e9e134e9f9993aaa6381486d5", async() => {
                 BeginContext(266, 11, true);
                 WriteLiteral("\r\n    <h1> ");
                 EndContext();
